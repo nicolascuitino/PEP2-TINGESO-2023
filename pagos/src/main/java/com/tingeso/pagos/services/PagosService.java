@@ -1,15 +1,18 @@
 package com.tingeso.pagos.services;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tingeso.pagos.entities.PagosEntity;
-import com.tingeso.pagos.entities.ProveedorEntity;
-import com.tingeso.pagos.entities.SubirDataEntity;
-import com.tingeso.pagos.entities.SubirDetailsEntity;
+import com.tingeso.pagos.models.ProveedorModel;
+import com.tingeso.pagos.models.SubirDataModel;
+import com.tingeso.pagos.models.SubirDetailsModel;
 import com.tingeso.pagos.repositories.PagosRepository;
-import com.tingeso.pagos.repositories.SubirDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class PagosService {
@@ -17,8 +20,41 @@ public class PagosService {
     PagosRepository pagosRepository;
 
     @Autowired
-    SubirDataRepository subirDataRepository;
+    ObjectMapper objectMapper;
 
+    @Autowired
+    RestTemplate restTemplate;
+
+
+    public List<SubirDataModel> obtenerData() {
+        List<SubirDataModel> subirData = restTemplate.getForObject("http://localhost:8091/data", List.class);
+        return objectMapper.convertValue(subirData, new TypeReference<>(){
+        });
+    }
+
+    public List<SubirDetailsModel> obtenerDetails() {
+        List<SubirDetailsModel> subirDetails = restTemplate.getForObject("http://localhost:8092/details", List.class);
+        return objectMapper.convertValue(subirDetails, new TypeReference<>(){
+        });
+    }
+
+    public ProveedorModel obtenerProveedor(String codigo) {
+        ProveedorModel proveedor = restTemplate.getForObject("http://localhost:8090/proveedores/" + codigo, ProveedorModel.class);
+        return objectMapper.convertValue(proveedor, new TypeReference<>(){
+        });
+    }
+
+    public SubirDetailsModel obtenerDetail(String codigo) {
+        SubirDetailsModel proveedor = restTemplate.getForObject("http://localhost:8092/detail/" + codigo, SubirDetailsModel.class);
+        return objectMapper.convertValue(proveedor, new TypeReference<>(){
+        });
+    }
+
+    public List<SubirDataModel> obtenerDataPorProv(String codigo) {
+        List<SubirDataModel> subirData = restTemplate.getForObject("http://localhost:8091/data/" + codigo, List.class);
+        return objectMapper.convertValue(subirData, new TypeReference<>(){
+        });
+    }
 
 
     public ArrayList<PagosEntity> obtenerPagos(){
@@ -37,7 +73,7 @@ public class PagosService {
 
     public void borrarTodos(){pagosRepository.deleteAll();}
 
-    public void guardarPagoDB(ProveedorEntity proveedor, SubirDataEntity data, SubirDetailsEntity details){
+    public void guardarPagoDB(ProveedorModel proveedor, SubirDataModel data, SubirDetailsModel details){
         PagosEntity pago = new PagosEntity();
         pago.setQuincena(data.getQuincena());
         pago.setCodigo(data.getProveedor());
@@ -68,9 +104,9 @@ public class PagosService {
     }
 
     public String totalLeche(String proveedor, String quincena){
-        ArrayList<SubirDataEntity> entregasLeche = subirDataRepository.findByProveedor(proveedor);
+        List<SubirDataModel> entregasLeche = obtenerDataPorProv(proveedor);
         Integer total = 0;
-        for(SubirDataEntity i : entregasLeche) {
+        for(SubirDataModel i : entregasLeche) {
             if (i.getQuincena().equals(quincena)) {
                 total = total + Integer.parseInt(i.getKls_leche());
             }
@@ -79,9 +115,9 @@ public class PagosService {
     }
 
     public String diasEntrega(String proveedor, String quincena){
-        ArrayList<SubirDataEntity> entregasLeche = subirDataRepository.findByProveedor(proveedor);
+        List<SubirDataModel> entregasLeche = obtenerDataPorProv(proveedor);
         Integer dias = 0;
-        for(SubirDataEntity i : entregasLeche) {
+        for(SubirDataModel i : entregasLeche) {
             if (i.getQuincena().equals(quincena)) {
                 dias = dias + 1;
             }
@@ -90,9 +126,9 @@ public class PagosService {
     }
 
     public String promedioLeche(String proveedor, String quincena){
-        ArrayList<SubirDataEntity> entregasLeche = subirDataRepository.findByProveedor(proveedor);
+        List<SubirDataModel> entregasLeche = obtenerDataPorProv(proveedor);
         Integer promedio = 0;
-        for(SubirDataEntity i : entregasLeche){
+        for(SubirDataModel i : entregasLeche){
             if(i.getQuincena().equals(quincena)) {
                 promedio = promedio + Integer.parseInt(i.getKls_leche());
             }
@@ -194,11 +230,11 @@ public class PagosService {
     }
 
     public String calculoBonificacion(String proveedor, String quincena){
-        ArrayList<SubirDataEntity> entregasLeche = subirDataRepository.findByProveedor(proveedor);
+        List<SubirDataModel> entregasLeche = obtenerDataPorProv(proveedor);
         Integer dias = 0;
         boolean m = false;
         boolean t = false;
-        for(SubirDataEntity i : entregasLeche) {
+        for(SubirDataModel i : entregasLeche) {
             if (i.getQuincena().equals(quincena)) {
                 dias = dias + 1;
                 if(i.getTurno().equals("M")){

@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class SubirDataService {
@@ -26,8 +27,8 @@ public class SubirDataService {
 
     private final Logger logg = LoggerFactory.getLogger(SubirDataService.class);
 
-    public ArrayList<SubirDataEntity> obtenerData(){
-        return (ArrayList<SubirDataEntity>) dataRepository.findAll();
+    public List<SubirDataEntity> obtenerData(){
+        return dataRepository.findAll();
     }
 
     @Generated
@@ -106,5 +107,9 @@ public class SubirDataService {
     }
     public void eliminarData(){
         dataRepository.deleteAll();
+    }
+
+    public List<SubirDataEntity> obtenerPorProveedor(String proveedor){
+        return dataRepository.findByProveedor(proveedor);
     }
 }

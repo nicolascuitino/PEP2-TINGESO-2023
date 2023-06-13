@@ -1,36 +1,25 @@
 package com.tingeso.pagos.controllers;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tingeso.pagos.entities.PagosEntity;
-import com.tingeso.pagos.entities.ProveedorEntity;
-import com.tingeso.pagos.entities.SubirDataEntity;
-import com.tingeso.pagos.entities.SubirDetailsEntity;
+import com.tingeso.pagos.models.SubirDataModel;
+import com.tingeso.pagos.models.SubirDetailsModel;
 import com.tingeso.pagos.services.PagosService;
-import com.tingeso.pagos.services.ProveedorService;
-import com.tingeso.pagos.services.SubirDataService;
-import com.tingeso.pagos.services.SubirDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping
 public class PagosController {
     @Autowired
     PagosService pagosService;
 
-    @Autowired
-    SubirDataService subirDataService;
-
-    @Autowired
-    SubirDetailsService subirDetailsService;
-
-    @Autowired
-    ProveedorService proveedorService;
 
     @GetMapping("/pagos")
     public String listarPagos(Model model) {
@@ -43,12 +32,12 @@ public class PagosController {
     //@PostMapping("/pagos")
     public void mostrarPagos(){
 
-        ArrayList<SubirDataEntity> subirData = subirDataService.obtenerData();
-        ArrayList<SubirDetailsEntity> subirDetails = subirDetailsService.obtenerDetails();
+        List<SubirDataModel> subirData = pagosService.obtenerData();
+        List<SubirDetailsModel> subirDetails = pagosService.obtenerDetails();
 
         boolean exists = false;
 
-        for(SubirDataEntity j: subirData){
+        for(SubirDataModel j: subirData){
             ArrayList<PagosEntity> pagos = pagosService.obtenerPagos();
             for(PagosEntity k: pagos){
                 if(k.getCodigo().equals(j.getProveedor()) &&
@@ -58,12 +47,64 @@ public class PagosController {
 
             }
             if(exists == false){
-                pagosService.guardarPagoDB(proveedorService.encontrarCodigo(j.getProveedor()),j,subirDetailsService.obtenerPorProveedor(j.getProveedor()));
+                pagosService.guardarPagoDB(pagosService.obtenerProveedor(j.getProveedor()),j,pagosService.obtenerDetail(j.getProveedor()));
             }
             exists = false;
         }
 
 
+    }
+
+    @PostMapping("/pagos/nuevo")
+    public void mostrarPagosPrueba(){
+
+        List<SubirDataModel> subirData = pagosService.obtenerData();
+        System.out.println("subirDataModel es " + subirData);
+        List<SubirDetailsModel> subirDetails = pagosService.obtenerDetails();
+
+        boolean exists = false;
+
+        for(SubirDataModel j: subirData){
+            ArrayList<PagosEntity> pagos = pagosService.obtenerPagos();
+            for(PagosEntity k: pagos){
+                if(k.getCodigo().equals(j.getProveedor()) &&
+                        j.getQuincena().equals(k.getQuincena())){
+                    exists = true;
+                }
+
+            }
+            if(exists == false){
+                pagosService.guardarPagoDB(pagosService.obtenerProveedor(j.getProveedor()),j,pagosService.obtenerDetail(j.getProveedor()));
+            }
+            exists = false;
+        }
+
+
+    }
+
+    @GetMapping("/pagos/all")
+    public ArrayList<PagosEntity> obtenerPagos(){
+
+        return pagosService.obtenerPagos();
+    }
+
+    @GetMapping("/obtener/acopios")
+    public ResponseEntity<List<SubirDataModel>> obtenerAcopios(){
+        List<SubirDataModel> subirData = pagosService.obtenerData();
+        if(subirData.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(subirData);
+    }
+
+    @Autowired
+    ObjectMapper objectMapper;
+    @GetMapping("/mostrar/acopios")
+    public List<SubirDataModel> mostrarAcopios(){
+         List<SubirDataModel> acopio = objectMapper.convertValue(pagosService.obtenerData(), new TypeReference<>(){
+        });
+
+        return acopio;
     }
 
 }

@@ -3,6 +3,7 @@ package com.tingeso.proveedores.controllers;
 import com.tingeso.proveedores.entities.ProveedorEntity;
 import com.tingeso.proveedores.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Controller
-@RequestMapping
+@RestController
 public class ProveedorController {
     @Autowired
     ProveedorService proveedorService;
@@ -59,8 +60,17 @@ public class ProveedorController {
     }
 
     @GetMapping("/getall")
-    public List<ProveedorEntity> getAll(){
+    public List<ProveedorEntity> obtenerTodos(){
         return proveedorService.obtenerProveedores();
+    }
+
+    @GetMapping("/proveedores/{codigo}")
+    public ResponseEntity<ProveedorEntity> obtenerProveedores(@PathVariable String codigo){
+        ProveedorEntity proveedor = proveedorService.encontrarCodigo(codigo);
+        if(proveedor == null){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(proveedor);
     }
 
 }

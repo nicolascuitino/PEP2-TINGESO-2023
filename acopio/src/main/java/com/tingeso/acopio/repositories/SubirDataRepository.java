@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 @Repository
 public interface SubirDataRepository extends JpaRepository <SubirDataEntity, Integer>{
 
-    ArrayList<SubirDataEntity> findByProveedor(String proveedor);
+    List<SubirDataEntity> findByProveedor(String proveedor);
 }

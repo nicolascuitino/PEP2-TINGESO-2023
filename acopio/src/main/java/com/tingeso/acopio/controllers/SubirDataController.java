@@ -3,18 +3,17 @@ package com.tingeso.acopio.controllers;
 import com.tingeso.acopio.entities.SubirDataEntity;
 import com.tingeso.acopio.services.SubirDataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
+import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping
 public class SubirDataController {
 
@@ -36,8 +35,26 @@ public class SubirDataController {
 
     @GetMapping("/fileInformation")
     public String listar(Model model) {
-        ArrayList<SubirDataEntity> datas = subirData.obtenerData();
+        List<SubirDataEntity> datas = subirData.obtenerData();
         model.addAttribute("datas", datas);
         return "fileInformation";
+    }
+
+    @GetMapping("/data")
+    public ResponseEntity<List<SubirDataEntity>> obtenerData(){
+        List<SubirDataEntity> datas = subirData.obtenerData();
+        if(datas.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(datas);
+    }
+
+    @GetMapping("/data/{codigo}")
+    public ResponseEntity<List<SubirDataEntity>> obtenerPorProveedor(@PathVariable String codigo){
+        List<SubirDataEntity> datas = subirData.obtenerPorProveedor(codigo);
+        if(datas.isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(datas);
     }
 }
