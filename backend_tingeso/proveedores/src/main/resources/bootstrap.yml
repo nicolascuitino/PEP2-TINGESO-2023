@@ -1,0 +1,19 @@
+spring:
+  application:
+    name: proveedores
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8090
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/PEP2-TINGESO-PROVEEDORES
+    username: postgres
+    password: 1234
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+

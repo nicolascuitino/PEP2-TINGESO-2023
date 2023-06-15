@@ -1,0 +1,18 @@
+spring:
+  application:
+    name: acopio
+  cloud:
+    config:
+      enabled: true
+      uri: http://localhost:8091
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/PEP2-TINGESO-ACOPIO
+    username: postgres
+    password: 1234
+  jpa:
+    database: POSTGRESQL
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: create
