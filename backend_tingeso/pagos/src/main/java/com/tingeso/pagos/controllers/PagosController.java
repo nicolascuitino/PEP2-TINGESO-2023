@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/pagos")
 public class PagosController {
     @Autowired
     PagosService pagosService;
@@ -82,7 +82,7 @@ public class PagosController {
 
     }
 
-    @GetMapping("/pagos/all")
+    @GetMapping("/all")
     public ArrayList<PagosEntity> obtenerPagos(){
 
         return pagosService.obtenerPagos();

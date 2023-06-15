@@ -29,16 +29,16 @@ spring:
         - id: proveedores
           uri: lb://proveedores
           predicates:
-            - Path=/ProveedorEntity/**
+            - Path=/proveedor/**
         - id: acopio
           uri: lb://acopio
           predicates:
-            - Path=/SubirDataEntity/**
+            - Path=/acopio/**
         - id: GyST
           uri: lb://GyST
           predicates:
-            - Path=/SubirDetailsEntity/**
+            - Path=/details/**
         - id: pagos
           uri: lb://pagos
           predicates:
-            - Path=/PagosEntity/**
+            - Path=/pagos/**

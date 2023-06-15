@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/details")
 public class SubirDetailsController {
     @Autowired
     SubirDetailsService subirDetailsService;
@@ -39,7 +39,7 @@ public class SubirDetailsController {
         return "fileInformation";
     }
 
-    @GetMapping("/details")
+    @GetMapping("/get")
     public ResponseEntity<List<SubirDetailsEntity>> obtenerData(){
         List<SubirDetailsEntity> details = subirDetailsService.obtenerDetails();
         if(details.isEmpty()){
@@ -48,7 +48,7 @@ public class SubirDetailsController {
         return ResponseEntity.ok(details);
     }
 
-    @GetMapping("/detail/{codigo}")
+    @GetMapping("/get/{codigo}")
     public ResponseEntity<SubirDetailsEntity> obtenerData(@PathVariable String codigo){
         SubirDetailsEntity details = subirDetailsService.obtenerPorProveedor(codigo);
         if(details == null){

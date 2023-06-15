@@ -4,7 +4,7 @@ spring:
   cloud:
     config:
       enabled: true
-      uri: http://localhost:8093
+      uri: http://localhost:8081
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5433/PEP2-TINGESO-PAGOS
