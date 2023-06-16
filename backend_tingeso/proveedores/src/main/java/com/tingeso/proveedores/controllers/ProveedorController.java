@@ -73,4 +73,10 @@ public class ProveedorController {
         return ResponseEntity.ok(proveedor);
     }
 
+    @PostMapping()
+    public ResponseEntity<ProveedorEntity> newProveedor(@RequestBody ProveedorEntity proveedor){
+        ProveedorEntity newProveedor = proveedorService.guardarProveedor(proveedor);
+        return ResponseEntity.ok(newProveedor);
+    }
+
 }
