@@ -118,4 +118,7 @@ body{
     background: #e84393;
     color: #fff;
 }
+.text-center{
+    color: #FFFFFF;
+}
 `

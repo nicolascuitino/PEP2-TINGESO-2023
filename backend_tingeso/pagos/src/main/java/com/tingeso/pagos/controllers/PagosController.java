@@ -21,12 +21,11 @@ public class PagosController {
     PagosService pagosService;
 
 
-    @GetMapping("/pagos")
-    public String listarPagos(Model model) {
+    @GetMapping()
+    public List<PagosEntity> listarPagos(Model model) {
         mostrarPagos();
         ArrayList<PagosEntity> totalPagos = pagosService.obtenerPagos();
-        model.addAttribute("pagos", totalPagos);
-        return "pagos";
+        return totalPagos;
     }
 
     //@PostMapping("/pagos")

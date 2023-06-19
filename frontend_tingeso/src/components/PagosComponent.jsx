@@ -1,18 +1,18 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import ProveedorService from "../services/ProveedorService"
+import PagosService from "../services/PagosService"
 
-class IndexComponent extends Component{
+class PagosComponent extends Component{
     constructor(props){
         super(props);
         this.state = {
-            proveedores: [],
+            pagos: [],
         };
     }
 
     componentDidMount(){
-        ProveedorService.getProveedores().then((res) => {
-            this.setState({ proveedores: res.data});
+        PagosService.getPagos().then((res) => {
+            this.setState({ pagos: res.data});
         });
     }
 
@@ -27,26 +27,60 @@ class IndexComponent extends Component{
 	                <nav>
 	                 </nav>
 	                <a class="btn" href="/"><button>Volver al menú principal</button></a>
-	                <a class="btn-2" href="/new-proveedor"><button>Ingresar nuevo proveedor</button></a>
+	                <a class="btn-2" href="/fileUpload"><button>Ingresar nuevo proveedor</button></a>
                 </header>
                 <h1 className="text-center"> <b>Lista de proveedores</b></h1>
                     <div className="f">
                     <table border="1" class="content-table">
                         <thead>
                             <tr>
+                                <th>Quincena</th>
                                 <th>Codigo</th>
                                 <th>Nombre</th>
-                                <th>Categoria</th>
-                                <th>Retencion</th>
+                                <th>Total KLS leche</th>
+                                <th>Nro. dias</th>
+                                <th>Promedio KLS leche</th>
+                                <th>% Variacion Leche</th>
+                                <th>% Grasa</th>
+                                <th>% Variacion Grasa</th>
+                                <th>% Solidos Totales</th>
+                                <th>% Variacion ST</th>
+                                <th>Pago por Leche</th>
+                                <th>Pago por Grasa</th>
+                                <th>Pago por ST</th>
+                                <th>Bonificacion por Frecuencia</th>
+                                <th>Dcto. Variacion Leche</th>
+                                <th>Dcto. Variacion Grasa</th>
+                                <th>Dcto. Variacion ST</th>
+                                <th>Pago Total</th>
+                                <th>Monto retencion</th>
+                                <th>Monto Final</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.proveedores.map((proveedor) => (
-                                <tr key={proveedor.codigo}>
-                                    <td>{proveedor.codigo}</td>
-                                    <td>{proveedor.nombre}</td>
-                                    <td>{proveedor.categoria}</td>
-                                    <td>{proveedor.retencion}</td>
+                            {this.state.pagos.map((pago) => (
+                                <tr key={pago.quincena}>
+                                    <td>{pago.quincena}</td>
+                                    <td>{pago.codigo}</td>
+                                    <td>{pago.nombre}</td>
+                                    <td>{pago.klsLeche}</td>
+                                    <td>{pago.nroDiasLeche}</td>
+                                    <td>{pago.promedioKlsLeche}</td>
+                                    <td>{pago.variacionLeche}</td>
+                                    <td>{pago.grasa}</td>
+                                    <td>{pago.variacionGrasa}</td>
+                                    <td>{pago.solidos}</td>
+                                    <td>{pago.variacionSolidos}</td>
+                                    <td>{pago.pagoXLeche}</td>
+                                    <td>{pago.pagoXGrasa}</td>
+                                    <td>{pago.pagoXST}</td>
+                                    <td>{pago.boniFrecuencia}</td>
+                                    <td>{pago.dctoLeche}</td>
+                                    <td>{pago.dctoGrasa}</td>
+                                    <td>{pago.dctoST}</td>
+                                    <td>{pago.pagoTotal}</td>
+                                    <td>{pago.retencion}</td>
+                                    <td>{pago.pagoFinal}</td>
                                 </tr>
                             ))}
                         </tbody>
@@ -58,7 +92,7 @@ class IndexComponent extends Component{
     }
 }
 
-export default IndexComponent;
+export default PagosComponent;
 
 const Styles = styled.div`
 
@@ -77,12 +111,17 @@ const Styles = styled.div`
     font-style: normal;
     font-variant: normal;
     text-transform: uppercase;
+    
 }
 
 .f{
-    justify-content: center;
+    
+    overflow:auto;
+    justify-content: left;
     align-items: center;
     display: flex;
+   
+}
 }
 *{
     font-family: sans-serif;
@@ -91,15 +130,19 @@ const Styles = styled.div`
     padding: 0;
 }
 .content-table{
+    
     border-collapse: collapse;
     margin: 25px 0;
-    font-size: 0.9em;
-    min-width: 400px;
+    font-size: 0.8em;
+    min-width: 200px;
     border-radius: 5px 5px 0 0;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    margin-left: 4%;
+    margin-right: 4%;
 }
 .content-table thead tr{
+    
     background-color: #009879;
     color: #ffffff;
     text-align: left;
@@ -108,6 +151,7 @@ const Styles = styled.div`
 .content-table th,
 .content-table td{
     padding: 12px 15px;
+    text-align: center;
 }
 .content-table tbody tr{
     border-bottom: 1px solid #dddddd;
@@ -168,6 +212,5 @@ const Styles = styled.div`
     color: #ffbc0e;
     transform: scale(1.1);
   }
-  
 
 `
