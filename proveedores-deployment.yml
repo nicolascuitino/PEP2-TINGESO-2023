@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: proveedores
+  labels:
+    app: proveedores
+spec:
+  selector:
+    matchLabels:
+      app: proveedores
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: proveedores
+    spec:
+      containers:
+      - name: proveedores
+        image: nicolascuitino4/backend-proveedores:latest
+        ports:
+        - containerPort: 8081
+        env:
+        - name: DB_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: postgresql-proveedores-db
+              key: host
+        - name: DB_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: postgresql-proveedores-db
+              key: POSTGRESQL_DB
+        - name: DB_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: postgresql-proveedores-db
+              key: POSTGRESQL_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            configMapKeyRef:
+              name: postgresql-proveedores-db
+              key: POSTGRESQL_PASSWORD
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: proveedores
+  labels:
+    app: proveedores
+spec:
+  selector:
+    app: proveedores
+  ports:
+    - nodePort: 30500
+      protocol: TCP
+      port: 8010
+      targetPort: 8081
+  type: NodePort
