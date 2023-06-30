@@ -4,6 +4,4 @@ metadata:
   name: postgresql-proveedores-db
 data:
   POSTGRESQL_DB: PEP2-TINGESO-PROVEEDORES
-  POSTGRESQL_USER: postgres
-  POSTGRESQL_PASSWORD: 1234
   host: postgresql
