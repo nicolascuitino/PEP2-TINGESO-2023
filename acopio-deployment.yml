@@ -1,22 +1,22 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: proveedores
+  name: acopio
   labels:
-    app: proveedores
+    app: acopio
 spec:
   selector:
     matchLabels:
-      app: proveedores
+      app: acopio
   replicas: 2
   template:
     metadata:
       labels:
-        app: proveedores
+        app: acopio
     spec:
       containers:
-      - name: proveedores
-        image: nicolascuitino4/backend-proveedores:latest
+      - name: acopio
+        image: nicolascuitino4/backend-acopio:latest
         ports:
         - containerPort: 8081
         env:
@@ -29,12 +29,12 @@ spec:
         - name: DB_HOST
           valueFrom:
             configMapKeyRef:
-              name: postgresql-proveedores-db
+              name: postgresql-acopio-db
               key: host
         - name: DB_NAME
           valueFrom:
             configMapKeyRef:
-              name: postgresql-proveedores-db
+              name: postgresql-acopio-db
               key: POSTGRESQL_DB
         - name: POSTGRES_USER
           valueFrom:
@@ -50,15 +50,15 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: proveedores
+  name: acopio
   labels:
-    app: proveedores
+    app: acopio
 spec:
   selector:
-    app: proveedores
+    app: acopio
   ports:
-    - nodePort: 30500
+    - nodePort: 30501
       protocol: TCP
-      port: 8082
-      targetPort: 8082
+      port: 8083
+      targetPort: 8083
   type: NodePort

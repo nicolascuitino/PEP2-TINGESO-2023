@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgresql-acopio-db
+data:
+  POSTGRESQL_DB: PEP2-TINGESO-ACOPIO
+  host: postgresql
