@@ -54,32 +54,7 @@ public class PagosController {
 
     }
 
-    @PostMapping("/pagos/nuevo")
-    public void mostrarPagosPrueba(){
 
-        List<SubirDataModel> subirData = pagosService.obtenerData();
-        System.out.println("subirDataModel es " + subirData);
-        List<SubirDetailsModel> subirDetails = pagosService.obtenerDetails();
-
-        boolean exists = false;
-
-        for(SubirDataModel j: subirData){
-            ArrayList<PagosEntity> pagos = pagosService.obtenerPagos();
-            for(PagosEntity k: pagos){
-                if(k.getCodigo().equals(j.getProveedor()) &&
-                        j.getQuincena().equals(k.getQuincena())){
-                    exists = true;
-                }
-
-            }
-            if(exists == false){
-                pagosService.guardarPagoDB(pagosService.obtenerProveedor(j.getProveedor()),j,pagosService.obtenerDetail(j.getProveedor()));
-            }
-            exists = false;
-        }
-
-
-    }
 
     @GetMapping("/all")
     public ArrayList<PagosEntity> obtenerPagos(){

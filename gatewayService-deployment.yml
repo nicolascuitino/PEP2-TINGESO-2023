@@ -8,7 +8,7 @@ spec:
   selector:
     matchLabels:
       app: gateway-service
-  replicas: 2
+  replicas: 1
   template:
     metadata:
       labels:
@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: gateway-service
-        image: nicolascuitino4/backend-eurekaservice:latest
+        image: nicolascuitino4/backend-gatewayservice:latest
         ports:
         - containerPort: 8081
         env:
@@ -41,4 +41,4 @@ spec:
     - protocol: TCP
       port: 8080
       targetPort: 8080
-  type: NodePort
+  type: LoadBalancer

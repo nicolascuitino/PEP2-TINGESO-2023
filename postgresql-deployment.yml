@@ -63,10 +63,25 @@ spec:
             secretKeyRef:
               name: postgres-credentials
               key: postgres_password
-        - name: POSTGRES_DB
+        - name: POSTGRES_DB_PROVEEDORES
           valueFrom:
             configMapKeyRef:
               name: postgresql-proveedores-db
+              key: POSTGRESQL_DB
+        - name: POSTGRES_DB_ACOPIO
+          valueFrom:
+            configMapKeyRef:
+              name: postgresql-acopio-db
+              key: POSTGRESQL_DB
+        - name: POSTGRES_DB_GYST
+          valueFrom:
+            configMapKeyRef:
+              name: postgresql-gyst-db
+              key: POSTGRESQL_DB
+        - name: POSTGRES_DB_PAGOS
+          valueFrom:
+            configMapKeyRef:
+              name: postgresql-pagos-db
               key: POSTGRESQL_DB
         ports:
         - containerPort: 5433

@@ -27,31 +27,31 @@ public class PagosService {
 
 
     public List<SubirDataModel> obtenerData() {
-        List<SubirDataModel> subirData = restTemplate.getForObject("http://localhost:8091/acopio/data", List.class);
+        List<SubirDataModel> subirData = restTemplate.getForObject("http://gateway-service:8080/acopio/data", List.class);
         return objectMapper.convertValue(subirData, new TypeReference<>(){
         });
     }
 
     public List<SubirDetailsModel> obtenerDetails() {
-        List<SubirDetailsModel> subirDetails = restTemplate.getForObject("http://localhost:8092/details/get", List.class);
+        List<SubirDetailsModel> subirDetails = restTemplate.getForObject("http://gateway-service:8080/details/get", List.class);
         return objectMapper.convertValue(subirDetails, new TypeReference<>(){
         });
     }
 
     public ProveedorModel obtenerProveedor(String codigo) {
-        ProveedorModel proveedor = restTemplate.getForObject("http://localhost:8090/proveedor/proveedores/" + codigo, ProveedorModel.class);
+        ProveedorModel proveedor = restTemplate.getForObject("http://gateway-service:8080/proveedor/proveedores/" + codigo, ProveedorModel.class);
         return objectMapper.convertValue(proveedor, new TypeReference<>(){
         });
     }
 
     public SubirDetailsModel obtenerDetail(String codigo) {
-        SubirDetailsModel proveedor = restTemplate.getForObject("http://localhost:8092/details/get/" + codigo, SubirDetailsModel.class);
+        SubirDetailsModel proveedor = restTemplate.getForObject("http://gateway-service:8080/details/get/" + codigo, SubirDetailsModel.class);
         return objectMapper.convertValue(proveedor, new TypeReference<>(){
         });
     }
 
     public List<SubirDataModel> obtenerDataPorProv(String codigo) {
-        List<SubirDataModel> subirData = restTemplate.getForObject("http://localhost:8091/acopio/data/" + codigo, List.class);
+        List<SubirDataModel> subirData = restTemplate.getForObject("http://gateway-service:8080/acopio/data/" + codigo, List.class);
         return objectMapper.convertValue(subirData, new TypeReference<>(){
         });
     }
